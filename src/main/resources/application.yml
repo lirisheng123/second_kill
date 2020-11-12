@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://47.94.215.148:3306/seconds_kill?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+jedisPoolConfig:
+  host: 47.94.215.148
+  port: 6379
+  password: 123456
+  maxTotal: 300
+  maxIdle: 100
+  maxWait: 10000
+  testOnBorrow: true
+  blockWhenExhausted: true
+  timeout: 2000
