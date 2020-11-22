@@ -16,10 +16,6 @@ public class RedisKeysConstant {
      */
     public final static String STOCK_SALE = "stock_sale_";
 
-    /**
-     * 库存值
-     */
-    public final static String STOCK_VERSION = "stock_version_";
 
     public final static String STOCK_NAME = "stock_name_";
 }

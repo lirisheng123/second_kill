@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -123,6 +124,33 @@ public class RedisPoolUtil {
             result = jedis.lpush(key, version, sale, count);
         } catch (Exception e) {
             log.error("listPut key:{} error", key, e);
+        }
+        return result;
+    }
+
+    public String  processSecondKillLua(String script,Long id){
+        Object result=null;
+        try(Jedis jedis = redisPool.getJedisPool().getResource()) {
+            result = jedis.eval(script, Collections.singletonList(id + ""), null);
+
+        }catch (Exception exception){
+            log.error("redis在进行秒杀的过程出现异常");
+            log.error("message:"+exception.getMessage());
+            log.error("message:"+exception.getCause());
+        }
+        System.out.println("result"+(String)result);
+        return (String)result;
+    }
+
+    public Long  processLimitLua(String script,Long limit){
+        Long result=0L;
+        try(Jedis jedis = redisPool.getJedisPool().getResource()){
+            String key = String.valueOf(System.currentTimeMillis() / 1000);
+            // 计数限流
+            result = (Long) jedis.eval(script, Collections.singletonList(key), Collections.singletonList(String.valueOf(limit)));
+
+        }catch (Exception exception){
+            log.error("redis在进行秒杀的过程出现异常");
         }
         return result;
     }

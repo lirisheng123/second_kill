@@ -1,9 +1,17 @@
 spring:
   datasource:
-    url: jdbc:mysql://47.94.215.148:3306/seconds_kill?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.94.215.148:3306/my_second_kill?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
+  kafka:
+    bootstrap-servers: 47.94.215.148:9092
+    consumer:
+      group-id: seconds-kill
+    template:
+      default-topic: SECONDS-KILL-TOPIC
+    listener:
+       concurrency: 3
 
 jedisPoolConfig:
   host: 47.94.215.148
@@ -15,3 +23,7 @@ jedisPoolConfig:
   testOnBorrow: true
   blockWhenExhausted: true
   timeout: 2000
+
+
+
+

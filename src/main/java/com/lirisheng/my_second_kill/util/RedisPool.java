@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -14,7 +13,6 @@ import redis.clients.jedis.JedisPoolConfig;
 @Getter
 public class RedisPool implements InitializingBean {
 
-//   private static RedisPool redisPool=new RedisPool();
    private  JedisPool jedisPool ;
 
 

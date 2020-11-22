@@ -13,39 +13,25 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 6/7 12:45
  */
 @Service(value = "StockService")
-@Transactional(rollbackFor = Exception.class)
 public class StockServiceImpl implements StockService {
 
     @Autowired
     private StockMapper stockMapper;
 
     @Override
-    public long getStockCount(int id) {
-        Stock stock = stockMapper.selectByPrimaryKey(id);
-        return  stock.getCount();
+    public Stock selectStockById(int id) {
+        return stockMapper.selectStockById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Stock getStockById(int id) {
-
-        return stockMapper.selectByPrimaryKey(id);
+    public void updateStockById(Long id) {
+        stockMapper.updateStockById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public int updateStockById(Stock stock) {
-
-        return stockMapper.updateByPrimaryKeySelective(stock);
-    }
-
-    @Override
-    public int updateStockByOptimistic(Stock stock) throws Exception{
-
-        return stockMapper.updateByOptimistic(stock);
-    }
-
-    @Override
-    public int initDBBefore() {
-
-        return stockMapper.initDBBefore();
+    public void initDatabaseById(Long id,Long count) {
+        stockMapper.initDatabaseById(id,count);
     }
 }

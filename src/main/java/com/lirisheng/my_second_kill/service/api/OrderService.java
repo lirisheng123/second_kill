@@ -25,30 +25,16 @@ public interface OrderService {
     /**
      * 数据库乐观锁更新库存，解决超卖问题
      *
-     * @param sid
+     * @param id
      * @return int
      */
-//    int createOptimisticOrder(int sid) throws Exception;
 
-    /**
-     * 数据库乐观锁更新库存，库存查询 Redis 减小数据库读压力
-     *
-     * @param sid
-     * @return void
-     */
-    void createOrderWithLimitAndRedis(int sid) throws Exception;
 
-    /**
-     * 限流 + Redis 缓存库存信息 + KafkaTest 异步发送消息
-     *
-     * @param sid
-     */
-//    void createOrderWithLimitAndRedisAndKafka(int sid) throws Exception;
+    void createOrderWithRedis(Long id) throws Exception;
 
-    /**
-     * Kafka 消费消息
-     *
-     * @param stock
-     */
-//    int consumerTopicToCreateOrderWithKafka(Stock stock) throws Exception;
+
+    void createOrderWithRedisAndKafaka(Long id) throws Exception;
+
+     void createOrder(Stock stock) throws Exception;
+
 }

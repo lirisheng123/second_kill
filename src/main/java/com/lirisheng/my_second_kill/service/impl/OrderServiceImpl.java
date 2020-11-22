@@ -3,6 +3,7 @@ package com.lirisheng.my_second_kill.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lirisheng.my_second_kill.StockWithRedis.RedisKeysConstant;
+import com.lirisheng.my_second_kill.StockWithRedis.RedisLimit;
 import com.lirisheng.my_second_kill.StockWithRedis.StockWithRedis;
 import com.lirisheng.my_second_kill.mapper.StockOrderMapper;
 import com.lirisheng.my_second_kill.pojo.Stock;
@@ -34,65 +35,68 @@ public class OrderServiceImpl implements OrderService {
     private StockOrderMapper orderMapper;
 
     @Autowired
-    StockWithRedis stockWithRedis;
+    private StockWithRedis stockWithRedis;
 
     @Autowired
-    RedisPoolUtil redisPoolUtil;
+    RedisLimit redisLimit;
 
-//    @Autowired
-//    private KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    private RedisPoolUtil redisPoolUtil;
 
-//    @Value("${spring.kafka.template.default-topic}")
-//    private String kafkaTopic;
+    @Autowired
+    private KafkaTemplate<String,String> kafkaTemplate;
 
-    private Gson gson = new GsonBuilder().create();
+    @Value("${spring.kafka.template.default-topic}")
+    private String kafkaTopic;
+
+    private Gson gson=new GsonBuilder().create();
+
 
     @Override
     public int delOrderDBBefore() {
         return orderMapper.delOrderDBBefore();
     }
 
-//    @Override
-//    public int createWrongOrder(int sid) throws Exception {
-//        Stock stock = checkStock(sid);
-//        saleStock(stock);
-//        int res = createOrder(stock);
-//
-//        return res;
-//    }
 
-//    @Override
-//    public int createOptimisticOrder(int sid) throws Exception {
-//        // 校验库存
-//        Stock stock = checkStock(sid);
-//        // 乐观锁更新
-//        saleStockOptimstic(stock);
-//        // 创建订单
-//        int id = createOrder(stock);
-//
-//        return id;
-//    }
 
-//    @Override
-//    public int createOrderWithLimitAndRedis(int sid) throws Exception {
-//        // 校验库存，从 Redis 中获取
-//        Stock stock = checkStockWithRedis(sid);
-
-//        // 乐观锁更新库存和Redis
-//        saleStockOptimsticWithRedis(stock);
-//        // 创建订单
-//        int res = createOrder(stock);
-//        return res;
-//    }
 
     @Override
-    public void createOrderWithLimitAndRedis(int sid) throws Exception {
-        //在redis读出缓存,库存是否足够
-        Stock stock = checkStockWithRedis(sid);
-        //库存足够,使用乐观锁以及创建订单,更新缓存
-        saleStockOptimsticWithRedis(stock);
-        //更新缓存
+    public void createOrderWithRedis(Long id) throws Exception {
+        //判断redis中是否有库存足够,如果,则扣除
+//        String result=stockWithRedis.secondKillWithRedis(id);
+        String result=redisLimit.secondKillWithRedis(id);
+        if(result.equals("")){
+            throw  new RuntimeException("库存不足,秒杀失败");
+        }
+
+        //扣除库存,创建订单
+        Stock stock = new Stock();
+        stock.setName(result);
+        stock.setId(id);
+        createOrder(stock);
+
     }
+
+
+
+    @Override
+    public void createOrderWithRedisAndKafaka(Long id) throws Exception {
+
+        //判断redis中是否有库存足够,如果,则扣除
+        String result=redisLimit.secondKillWithRedis(id);
+        if(result.equals("")){
+            throw  new RuntimeException("库存不足,秒杀失败");
+        }
+        //扣除库存,创建订单,并该任务放在Kafka任务中
+        Stock stock = new Stock();
+        stock.setName(result);
+        stock.setId(id);
+        kafkaTemplate.send(kafkaTopic,gson.toJson(stock));
+    }
+
+
+
+
 
 
 
@@ -142,19 +146,19 @@ public class OrderServiceImpl implements OrderService {
 //
 //        return stock;
 //    }
-    private Stock checkStockWithRedis(int sid) throws  Exception {
-        Integer count = Integer.parseInt(redisPoolUtil.get(RedisKeysConstant.STOCK_COUNT+sid));
-        Integer verson = Integer.parseInt(redisPoolUtil.get(RedisKeysConstant.STOCK_VERSION+sid));
-        String name=redisPoolUtil.get(RedisKeysConstant.STOCK_NAME+sid);
-        if(count<1){
-            throw new RuntimeException("库存不足");
-        }
-        Stock stock = new Stock();
-        stock.setId((long)sid);
-        stock.setVersion((long)verson);
-        stock.setName(name);
-        return  stock;
-    }
+//    private Stock checkStockWithRedis(int sid) throws  Exception {
+//        Integer count = Integer.parseInt(redisPoolUtil.get(RedisKeysConstant.STOCK_COUNT+sid));
+//        Integer verson = Integer.parseInt(redisPoolUtil.get(RedisKeysConstant.STOCK_VERSION+sid));
+//        String name=redisPoolUtil.get(RedisKeysConstant.STOCK_NAME+sid);
+//        if(count<1){
+//            throw new RuntimeException("库存不足");
+//        }
+//        Stock stock = new Stock();
+//        stock.setId((long)sid);
+//        stock.setVersion((long)verson);
+//        stock.setName(name);
+//        return  stock;
+//    }
 
 //    /**
 //     * 更新数据库和 DB
@@ -168,20 +172,20 @@ public class OrderServiceImpl implements OrderService {
 //        StockWithRedis.updateStockWithRedis(stock);
 //    }
 
-    @Transactional(rollbackFor = Exception.class,
-                   isolation = Isolation.READ_UNCOMMITTED)
-    public void saleStockOptimsticWithRedis(Stock stock) throws Exception{
-        //更新数据库
-        int res=stockService.updateStockByOptimistic(stock);
-        if(res==0){
-            throw  new RuntimeException("库存不足,更新失败");
-        }
-        //创建订单
-        createOrder(stock);
-        //创建缓存
-        stockWithRedis.updateStockWithRedis(stock);
-
-    }
+//    @Transactional(rollbackFor = Exception.class,
+//                   isolation = Isolation.READ_UNCOMMITTED)
+//    public void saleStockOptimsticWithRedis(Stock stock) throws Exception{
+//        //更新数据库
+//        int res=stockService.updateStockByOptimistic(stock);
+//        if(res==0){
+//            throw  new RuntimeException("库存不足,更新失败");
+//        }
+//        //创建订单
+//        createOrder(stock);
+//        //创建缓存
+//        stockWithRedis.updateStockWithRedis(stock);
+//
+//    }
 
 
 //    /**
@@ -215,17 +219,21 @@ public class OrderServiceImpl implements OrderService {
 //    }
 
     /**
-     * 创建订单
+     * 扣除mysql的库存并创建订单
      */
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createOrder(Stock stock) throws Exception {
+
         StockOrder order = new StockOrder();
         order.setSid(stock.getId());
         order.setName(stock.getName());
         order.setCreateTime(new Date());
-        int res = orderMapper.insertSelective(order);
-        if (res == 0) {
-            throw new RuntimeException("创建订单失败");
-        }
+        //扣除库存
+        stockService.updateStockById(stock.getId());
+        //下订单
+        orderMapper.insertSelective(order);
+
     }
 }
