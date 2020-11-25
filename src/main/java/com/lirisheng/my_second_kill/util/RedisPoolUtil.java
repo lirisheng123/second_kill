@@ -9,6 +9,10 @@ import redis.clients.jedis.JedisPool;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Slf4j
 @Component
 public class RedisPoolUtil {

@@ -13,9 +13,9 @@ import redis.clients.jedis.Jedis;
 import java.util.Collections;
 
 /**
- * @auther G.Fukang
- * @date 6/7 21:45
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Slf4j
 @Component
 public class RedisLimit {

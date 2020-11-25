@@ -1,9 +1,9 @@
 package com.lirisheng.my_second_kill.StockWithRedis;
 
 /**
- * @auther G.Fukang
- * @date 6/8 10:59
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 public class RedisKeysConstant {
 
     /**

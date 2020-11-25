@@ -4,9 +4,10 @@ package com.lirisheng.my_second_kill.service.api;
 import com.lirisheng.my_second_kill.pojo.Stock;
 
 /**
- * @auther G.Fukang
- * @date 6/7 12:35
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
+
 public interface OrderService {
 
     /**
@@ -14,27 +15,26 @@ public interface OrderService {
      */
     int delOrderDBBefore();
 
-    /**
-     * 创建订单（存在超卖问题）
-     *
-     * @param sid
-     * @return int
-     */
-//    int createWrongOrder(int sid) throws Exception;
 
     /**
-     * 数据库乐观锁更新库存，解决超卖问题
-     *
+     * redis秒杀成功后,在进行下单的操作(库存减1,创建订单)
      * @param id
-     * @return int
+     * @throws Exception
      */
-
-
     void createOrderWithRedis(Long id) throws Exception;
 
-
+    /**
+     * redis秒杀成功后,使用异步下单,并直接返回响应给用户
+     * @param id
+     * @throws Exception
+     */
     void createOrderWithRedisAndKafaka(Long id) throws Exception;
 
+    /**
+     *下单操作:mysql中的商品库存减1,并生成
+     * @param stock
+     * @throws Exception
+     */
      void createOrder(Stock stock) throws Exception;
 
 }

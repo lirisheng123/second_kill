@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+
+/**
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
+
 @Slf4j
 @Api("测试接口")
 @RestController
@@ -32,6 +38,10 @@ public class MyController {
     @Autowired
     RedisLimit redisLimit;
 
+    /**
+     * 初始化redis和mysql数据库,这里默认对id为1的商品的初始库存量为5000.
+     * @return
+     */
     @ApiOperation(value = "初始化redis和mysql数据库",notes = "重置数据,方便测试")
     @GetMapping("/initDBAndRedis")
     public ResBean initDBAndRedis(){
@@ -55,6 +65,11 @@ public class MyController {
         return ResBean.OK("初始化数据库和重置redis缓存成功");
     }
 
+    /**
+     * reids+mysql来进行秒杀
+     * @param sid
+     * @return
+     */
     @ApiOperation(value = "使用redis缓存秒杀",notes = "无")
     @PostMapping("/createOrderWithRedis")
     public ResBean createOrderWithRedis(@RequestParam("sid") Long sid){
@@ -68,6 +83,11 @@ public class MyController {
         return ResBean.OK("订单下单成功");
     }
 
+    /**
+     * reids+mysql+限流
+     * @param sid
+     * @return
+     */
     @ApiOperation(value = "redis缓存+限流来进行秒杀",notes = "无")
     @PostMapping("/createOrderWithLimitAndRedis")
     public ResBean createOrderWithLimitAndRedis(@RequestParam("sid") Long sid){
@@ -93,7 +113,11 @@ public class MyController {
     }
 
 
-
+    /**
+     * redis+mysql+异步下单
+     * @param sid
+     * @return
+     */
     @ApiOperation(value = "redis缓存+异步下单来进行秒杀",notes = "无")
     @PostMapping("/createOrderWithLimitAndRedisAndKafaka")
     public ResBean createOrderWithRedisAndKafaka(@RequestParam("sid") Long sid){

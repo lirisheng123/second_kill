@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 /**
- * @auther G.Fukang
- * @date 6/7 11:52
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Mapper
 public interface StockMapper {
 

@@ -10,14 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
-
-import java.util.Collections;
 import java.util.List;
 
 /**
- * @auther G.Fukang
- * @date 6/8 21:47
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Slf4j
 @Component
 public class StockWithRedis {
@@ -76,6 +74,7 @@ public class StockWithRedis {
 //            RedisPool.jedisPoolClose(jedis);
 //        }
 //    }
+
     public  void resetRedis(Stock stock) throws  Exception{
 
         try(Jedis jedis=redisPool.getJedisPool().getResource()){

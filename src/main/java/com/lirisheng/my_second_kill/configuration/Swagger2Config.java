@@ -12,12 +12,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
- * @author : DGUT.YE
+ * @author : lirisheng
  * @date : 2020/9/15
  **/
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
+
+    /**
+     * 对生成swagger接口文档的属性的配置,例如文档大的名字
+     * 指定swagger要扫描的包
+     * @return
+     */
     @Bean
     public Docket getUserDocket(){
         ApiInfo apiInfo=new ApiInfoBuilder()
@@ -29,7 +35,8 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)//文档类型（swagger2）
                 .apiInfo(apiInfo)//设置包含在json ResourceListing响应中的api元信息
                 .select()//启动用于api选择的构建器
-                .apis(RequestHandlerSelectors.basePackage("com.lirisheng.my_second_kill.controller"))//扫描接口的包
+                //注意:指定要扫描的controller的路径,要不然是不会生成接口文档的
+                .apis(RequestHandlerSelectors.basePackage("com.lirisheng.my_second_kill.controller"))
                 .paths(PathSelectors.any())//路径过滤器（扫描所有路径）
                 .build();
     }

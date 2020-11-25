@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @auther G.Fukang
- * @date 6/7 12:45
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Service(value = "StockService")
 public class StockServiceImpl implements StockService {
 

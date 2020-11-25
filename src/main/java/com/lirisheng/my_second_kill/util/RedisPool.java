@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-
+/**
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Component
 @Getter
 public class RedisPool implements InitializingBean {
@@ -61,23 +64,5 @@ public class RedisPool implements InitializingBean {
     }
 
     private  RedisPool(){}
-
-
-
-//    public static Jedis  getJedis(){
-//        System.out.println(redisPool);
-//        Assert.assertNotNull(redisPool.getHost());
-//        Assert.assertNotNull(redisPool.getJedisPool());
-//        return  redisPool.getJedisPool().getResource();
-//    }
-//
-//    public static void jedisPoolClose(Jedis jedis){
-//        if(jedis!=null){
-//            jedis.close();
-//        }
-//    }
-
-
-
 
 }

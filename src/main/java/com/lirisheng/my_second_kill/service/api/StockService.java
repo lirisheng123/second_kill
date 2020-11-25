@@ -4,9 +4,9 @@ package com.lirisheng.my_second_kill.service.api;
 import com.lirisheng.my_second_kill.pojo.Stock;
 
 /**
- * @auther G.Fukang
- * @date 6/7 12:35
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 public interface StockService {
 
 

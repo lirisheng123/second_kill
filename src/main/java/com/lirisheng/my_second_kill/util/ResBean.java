@@ -3,6 +3,10 @@ package com.lirisheng.my_second_kill.util;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 @Setter
 @Getter
 public class ResBean {

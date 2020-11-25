@@ -7,9 +7,9 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
- * @auther G.Fukang
- * @date 6/7 20:42
- */
+ * @author : lirisheng
+ * @date : 2020/9/15
+ **/
 public class ScriptUtil {
 
     // 解析 lua
