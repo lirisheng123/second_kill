@@ -24,25 +24,25 @@
 
   JMeter启动成功后,建立一个线程组
 
-  ![image-20201125095812108](E:\typora\image\image-20201125095812108.png)
+  <img src="https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201125095812108.png?raw=true" style="zoom: 50%;" />
 
-  ![image-20201125095931446](E:\typora\image\image-20201125095931446.png)
+  <img src="https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201125095931446.png?raw=true" alt="image-20201125095931446" style="zoom:50%;" />
 
   建立http请求,测试接口
 
-  ![image-20201125100028109](E:\typora\image\image-20201125100028109.png)
+  <img src="https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201125100028109.png?raw=true" alt="image-20201125100028109" style="zoom: 67%;" />
 
   填写好http请求的访问地址后
 
   建立一个测试结果统计报告
 
-  ![image-20201125100418374](E:\typora\image\image-20201125100418374.png)
+  <img src="https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201125100418374.png?raw=true" alt="image-20201125100418374" style="zoom: 67%;" />
 
   做完上述步骤后,点击绿色按钮执行即可
 
 - 如果你不想自己自定义数据来测试,也可以使用JMeter打开在项目目录的`my_second_kil.jmx`文件,运行即可
 
-  ![image-20201125100857168](E:\typora\image\image-20201125100857168.png)
+  <img src="https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201125100857168.png?raw=true" alt="image-20201125100857168" style="zoom: 50%;" />
 
   
 
@@ -74,7 +74,7 @@
 
 - 商城的秒杀系统的流程
 
-  ![image-20201118213427020](E:\typora\image\image-20201118213427020.png)
+  ![image-20201118213427020](https://github.com/lirisheng123/GitMrakDownImage/blob/master/secondKill/image-20201118213427020.png?raw=true)
 
 - 解释:
 
